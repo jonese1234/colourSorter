@@ -2,7 +2,6 @@ import random
 from PIL import Image
 import colorsys
 import time
-from timsort import timsort
 
 width = 30
 height = 1
