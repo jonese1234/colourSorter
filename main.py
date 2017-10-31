@@ -3,9 +3,9 @@ from PIL import Image
 import colorsys
 import time
 
-width = 30
+width = 100
 height = 1
-pixHeight = 30
+pixHeight = 100
 totalList = []
 glBaseInt = 0
 glTotalInt = 0
@@ -32,7 +32,6 @@ def makeRainbowNew():
 
     #print(rainBowList)
     return rainBowList
-
 
 def makeRandomRainbowNew():
     rainbow = makeRainbowNew()
@@ -118,25 +117,75 @@ def makeLargeImg(list, name):
     imgRBGList = [tuple(x) for x in flatRGBList]
 
     im.putdata(imgRBGList, scale=8.0)
-    im.save(name + ".png", "PNG")
+    test1 = im.resize((600,600), Image.NEAREST)
+    test1.save(name + ".png", "PNG")
 
 def imagePrint(list_):
     i = 1
     for x in list_:
-        makeLargeImg(x, "record\\test8\\"+str(i))
+        makeLargeImg(x, "record\\test6\\"+str(i))
         i += 1
+
+def bubbleSort(alist):
+    for passnum in range(len(alist)-1,0,-1):
+        for i in range(passnum):
+            if alist[i]>alist[i+1]:
+                temp = alist[i]
+                alist[i] = alist[i+1]
+                alist[i+1] = temp
+                makeImageList(alist.copy())
+
+
+def mergesort(lst, left=0, right=None):
+    if right is None:
+        right = len(lst) - 1
+    if left >= right:
+        return
+    middle = (left + right) // 2
+    mergesort(lst, left, middle)
+    mergesort(lst, middle + 1, right)
+    i, end_i, j = left, middle, middle + 1
+    while i <= end_i and j <= right:
+        if lst[i] < lst[j]:
+            i += 1
+            continue
+        lst[i], lst[i+1:j+1] = lst[j], lst[i:j]
+        #lst.log()
+        i, end_i, j = i + 1, end_i + 1, j + 1
+        makeImageList(lst.copy())
+
+def cocktailsort(lst):
+    begin, end = 0, len(lst) - 1
+    finished = False
+    while not finished:
+        finished = True
+        for i in range(begin, end):
+            if lst[i] > lst[i + 1]:
+                lst[i], lst[i + 1] = lst[i + 1], lst[i]
+                finished = False
+                makeImageList(lst.copy())
+        if finished:
+            break
+        finished = True
+        end -= 1
+        for i in reversed(range(begin, end)):
+            if lst[i] > lst[i + 1]:
+                lst[i], lst[i + 1] = lst[i + 1], lst[i]
+                finished = False
+                makeImageList(lst.copy())
+        begin += 1
+
 
 def main():
     timeStart = time.clock()
     rndRainbow = makeRandomRainbowNew()
     #print(rndRainbow)
 
-
     for x in rndRainbow:
         global glBaseInt, currentOne
         glBaseInt = 0
         currentOne += 1
-        quick_sort_recursive(x, 0, len(x)-1)
+        cocktailsort(x)
         for y in totalList:
             if len(y) < currentOne:
                     y.append(compleatedRow.copy())
