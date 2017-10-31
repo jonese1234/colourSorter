@@ -2,10 +2,13 @@ import random
 from PIL import Image
 import colorsys
 import time
+from bubblesort import bubbleSort
+from algo import shellsort
+import os
 
-width = 100
+width = 50
 height = 1
-pixHeight = 100
+pixHeight = 50
 totalList = []
 glBaseInt = 0
 glTotalInt = 0
@@ -118,23 +121,15 @@ def makeLargeImg(list, name):
 
     im.putdata(imgRBGList, scale=8.0)
     test1 = im.resize((600,600), Image.NEAREST)
+    if not os.path.exists(name.rsplit("\\", 1)[0]):
+        os.makedirs(name.rsplit("\\", 1)[0])
     test1.save(name + ".png", "PNG")
 
 def imagePrint(list_):
     i = 1
     for x in list_:
-        makeLargeImg(x, "record\\test6\\"+str(i))
+        makeLargeImg(x, "record\\test4\\"+str(i))
         i += 1
-
-def bubbleSort(alist):
-    for passnum in range(len(alist)-1,0,-1):
-        for i in range(passnum):
-            if alist[i]>alist[i+1]:
-                temp = alist[i]
-                alist[i] = alist[i+1]
-                alist[i+1] = temp
-                makeImageList(alist.copy())
-
 
 def mergesort(lst, left=0, right=None):
     if right is None:
@@ -185,7 +180,7 @@ def main():
         global glBaseInt, currentOne
         glBaseInt = 0
         currentOne += 1
-        cocktailsort(x)
+        shellsort.shellsort(x)
         for y in totalList:
             if len(y) < currentOne:
                     y.append(compleatedRow.copy())
